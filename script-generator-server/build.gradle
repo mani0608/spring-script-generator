@@ -1,0 +1,89 @@
+buildscript {
+	ext {
+		springBootVersion = '2.0.0.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+    baseName = 'script-generator'
+    version =  '0.1.0'
+    manifest {
+		attributes 'Start-Class': 'com.le.conversion.ScriptGeneratorApplication'
+	}
+}
+
+springBoot {
+	buildInfo()
+	mainClassName = 'com.le.conversion.ScriptGeneratorApplication'
+}
+
+group = 'com.le.conversion'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	providedRuntime
+}
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('org.springframework.boot:spring-boot-devtools')
+	runtime('org.hsqldb:hsqldb')
+	compile('com.fasterxml.jackson.dataformat:jackson-dataformat-xml')
+	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
+	compileOnly('org.projectlombok:lombok')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	
+	compile group: 'commons-fileupload', name: 'commons-fileupload', version: '1.3.3'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.10.0'
+	compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.10.0'
+	compile group: 'org.apache.poi', name: 'poi', version: '3.17'
+	compile group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+	compile group: 'org.apache.poi', name: 'ooxml-schemas', version: '1.3'
+	compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+	compile group: 'org.jooq', name: 'jooq', version: '3.10.5'
+	compile group: 'org.jooq', name: 'jooq-meta', version: '3.10.5'
+	compile group: 'org.jooq', name: 'jooq-codegen', version: '3.10.5'
+	
+}
+
+sourceSets {
+	main {
+		java {
+			srcDir 'src/main/java'
+		}
+		resources {
+			srcDir 'src/main/resources'
+		}
+	}
+}
+
+task copyAngular {
+	copy {
+		from '../script-generator-client/dist'
+		into './src/main/resources/static/'
+	}
+}
+
+task cleanTask {
+	doFirst{
+		delete "${buildDir}"
+	} 
+}
+
+

@@ -1,0 +1,15 @@
+.git
+dist
+myApp
+target
+.gradle
+.settings
+.metadata
+.vscode
+e2e
+node_modules
+.project
+bin
+build
+RemoteSystemsTempFiles
+.classpath
